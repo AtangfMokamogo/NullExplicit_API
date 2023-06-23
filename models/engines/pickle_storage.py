@@ -34,6 +34,9 @@ class PickleStorage:
             return False
         
         
+        # save file info to database maybe ??
+        
+        
     def de_pickler(pickle_file):
         """ This Function de-serializes a pickle file
             into the original ImageQuery object
@@ -61,3 +64,11 @@ class PickleStorage:
         except Exception as E:
             print("An error occurred:", str(E))
             return None
+        
+    """ this function deletes a pickle file from the system
+     def remove_pickles(self, pickle_file):
+        // handle neccessary imports
+        // find pickle file in system
+        // purge it from system
+        // return successful or error
+    """
