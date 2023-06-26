@@ -2,10 +2,13 @@
 """ Implements a basic command interpreter in python """
 
 import cmd
+from analysis_engines.image_engine import ImageEngine
+from analysis_engines.text_engine import TextEngine
 from models.engines.pickle_storage import PickleStorage
 from models.image_query import ImageQuery
 from models.text_query import TextQuery
 #from models.api_users import APIUsers
+import os
 from models.engines.database_storage import DBStorage
 import sys
 
@@ -19,7 +22,7 @@ class NullExplicitConsole(cmd.Cmd):
     
     def precmd(self, line):
         # Perform command validation
-        if line.split()[0] not in ['greet', 'quit', 'q', 'create']:
+        if line.split()[0] not in ['greet', 'quit', 'q', 'create', 'AnalyzeImage', 'AnalyzeText']:
             print("Invalid command.")
             return ''
         return line
@@ -104,11 +107,39 @@ class NullExplicitConsole(cmd.Cmd):
                 print('query created: {}'.format(image_query.__dict__))
                 PickleStorage.pickler(image_query)
             elif class_name == 'TextQuery':
-                obj = TextQuery(user_id="makhado", text_input="another test string", analysis_score="Negative")
+                obj = TextQuery(user_id="makhado", query_id="23" text_input="another test string", analysis_score="Negative")
                 TextQuery.save(obj)"""
+
+
+    def do_AnalyzeImage(self, line):
+        """ This Cnonsole Method Sends an image to the Image Engine for analysis """
         
+        image_filename = input("Please enter the name of the image file: ")
+        current_dir = os.getcwd()
+
+        # Construct the full image path.
+        # NOTE that all images tested via the console should be saved
+        # In the images/users/admin directory
+        image_filename = os.path.basename(image_path)
+        image_path = os.path.join(current_dir, "images", "users", "admin", image_filename)
+
+        image_analyzer = ImageEngine()
+        image_analyzer.analyze_file(image_path)
+        
+        
+    def do_AnalyzeText(self, line):
+        """ This Console Method sends a Test Text Input for Sentiment Analysis """
+        
+        text_input = "another life that probably sucks"
+        
+        analyse_this = TextEngine()
+        analysis = analyse_this.analyze_text(text_input)
+    
+    
+          
     def do_quit(self, user='Default'):
         sys.exit()
-        
+    
+    
 if __name__ == '__main__':
     NullExplicitConsole().cmdloop()
