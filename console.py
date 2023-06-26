@@ -112,7 +112,7 @@ class NullExplicitConsole(cmd.Cmd):
 
 
     def do_AnalyzeImage(self, line):
-        """ This Cnonsole Method Sends an image to the Image Engine for analysis """
+        """ This Console Method Sends an image to the Image Engine for analysis """
         
         image_filename = input("Please enter the name of the image file: ")
         current_dir = os.getcwd()
