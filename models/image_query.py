@@ -6,6 +6,7 @@ import uuid
 
 class ImageQuery():
     """ A reresentation of an image query object """
+    
     def __init__(self, image_file, user_id, classification_results):
         
         # Get the file path after saving from the request headers in the flask app

@@ -24,11 +24,13 @@ class TextQuery(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     
     
-    # methods that deal with sending and reloading info from databse
     def save(self):
+        """ Saves object instance to database """
+        
         from models.engines.database_storage import DBStorage
         storage = DBStorage()
         storage.reload_database()
+        
         # create new object
         storage.new_query(self)
         

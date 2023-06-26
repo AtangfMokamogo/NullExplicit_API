@@ -4,10 +4,21 @@
 import pickle
 from models.image_query import ImageQuery
 
+
 class PickleStorage:
     """ Serializes an object to pickle file and back to object instance again """
+    
     def pickler(query_object):
-        """ This Fucntion serializes an ImageQuery object using pickle """
+        """ This Function serializes an ImageQuery Object 
+            into a pickle file
+
+        Args:
+            query_object(binary): The pickled file to deserialize
+            
+        Returns:
+            binary: The serialized pickle file.
+        """
+        
         
         # Pickle file name created from the query unique id
         # TODO: implement a way of uploading pickle file names to the database
@@ -19,28 +30,31 @@ class PickleStorage:
                 
             print("Object Successfully Pickled!")
             return pickle_file
-        
-        # Catch pickle error        
+               
         except pickle.PicklingError as PE:
             print("Error in Creating Pickle!: {}".format(PE))
             return False
         
-        # Catch file operation error
         except (IOError, FileNotFoundError) as IOErrors:
             print("Error occured when working on file: {}".format(IOErrors))
             return False
+        
         except Exception as E:
             print(" An Error Occured: {}".format(E))
             return False
         
         
-        # save file info to database maybe ??
-        
-        
     def de_pickler(pickle_file):
         """ This Function de-serializes a pickle file
             into the original ImageQuery object
+
+        Args:
+            pickle_file(binary): The pickled file to deserialize
+            
+        Returns:
+            class: The instance of the pickled class.
         """
+        
         try:
             with open(pickle_file, 'rb') as file:
                 serial_query_obj = pickle.load(file)

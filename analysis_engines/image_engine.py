@@ -1,11 +1,14 @@
 #!/usr/bin/python3
-""" This Module Is Responsible For Communicationg With The 
-    Imagga Image Analysis API
-"""
+""" module that implements the image classification engine """
 import requests
 import os
 
+
 class ImageEngine():
+    """ This Module Is Responsible For Communicationg With The 
+        Imagga Image Analysis API
+    """
+    
     
     def __init__(self):
         self.__IMAGGA_API_KEY = "acc_be0866406e09521"
@@ -13,7 +16,14 @@ class ImageEngine():
     
     
     def analyze_file(self, image_path):
-        """ This Method Requests an Imagge categorisation form the Imagga API """
+        """This Method Requests an Imagge categorisation form the Imagga API 
+
+        Args:
+            image_path (str): The path to the image file
+        
+        Returns:
+            The classification score of the image
+        """
         try:    
             response = requests.post(
             'https://api.imagga.com/v2/categories/nsfw_beta',

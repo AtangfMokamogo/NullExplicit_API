@@ -7,9 +7,12 @@ import time
 
 
 class TextEngine():
+    """ This Class implements methods that communicate with rev.ai Sentiment
+        Analysis Engine
+    """
     
     def __init__(self):
-        self.__ACCESS_TOKEN = 
+        self.__ACCESS_TOKEN = "02eSslKwFRZ7M3hO3B-mtupMCN2KpBTpbPi6QKZgmIYLhg1nZZ7pBA6Dc1j83L0IgMtRpWr_YNy4vycW1RKDWTgOfRGF4"
         
         
     def _request_state(self, query_id):
@@ -23,18 +26,14 @@ class TextEngine():
         """
         
         try:
-            url = "https://api.rev.ai/sentiment_analysis/v1/jobs/{}".format(query_id)
+            url = "https://api.rev.ai/sentiment_analysis/v1/jobs/" + query_id + "/result"
             headers = {
                 "Authorization":"Bearer {}".format(self.__ACCESS_TOKEN)
             }
             
             response = requests.get(url, headers=headers)
-            status = response.json().get("status")
-            print(status)
-            if status == "completed":
-                return response.json()
-            else:
-                return status
+            
+            return response.json()
         
         except requests.exceptions.RequestException as ERROR_IN_PROCESSING_REQUEST:
             print("A request exception occurred:", str(ERROR_IN_PROCESSING_REQUEST))
