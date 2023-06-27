@@ -46,12 +46,14 @@ class NullExplicitConsole(cmd.Cmd):
         
         # Parse the command
         cmd_parts = command.strip().split('(')
-        if len(cmd_parts) != 2:
+        command_name = cmd_parts[0]
+        
+        if len(cmd_parts) != 2 and command_name == "TextQuery":
             print("Invalid command format")
             return
         
         # This extracts the class name from the command
-        command_name = cmd_parts[0]
+        
         
         # Extract the parameters
         args = cmd_parts[1].rstrip(')')
@@ -100,16 +102,11 @@ class NullExplicitConsole(cmd.Cmd):
             )
             TextQuery.save(obj)
         else:
-            print("Invalid command or arguments")
-        """if class_name in classes:
-            if class_name == 'ImageQuery':
+            if command_name == 'ImageQuery':
+            
                 image_query = ImageQuery('/docs/images/user/image1.jpeg','Test-User', 'positive')
                 print('query created: {}'.format(image_query.__dict__))
-                PickleStorage.pickler(image_query)
-            elif class_name == 'TextQuery':
-                obj = TextQuery(user_id="makhado", query_id="23" text_input="another test string", analysis_score="Negative")
-                TextQuery.save(obj)"""
-
+                PickleStorage.pickler(image_query, 'admin')
 
     def do_AnalyzeImage(self, line):
         """ This Console Method Sends an image to the Image Engine for analysis """
