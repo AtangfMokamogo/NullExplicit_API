@@ -12,8 +12,8 @@ class ImageEngine():
     
     
     def __init__(self):
-        self.__IMAGGA_API_KEY = "acc_be0866406e09521"
-        self.__IMAGGA_API_SECRET = "8ad8461cd9f61144317b9987258ce562"
+        self.__IMAGGA_API_KEY = os.environ.get('IMAGGA_API_KEY')
+        self.__IMAGGA_API_SECRET = os.environ.get('IMAGGA_API_SECRET')
     
     def _parse_response(self, json_str):
         """This private class function parses the json response
