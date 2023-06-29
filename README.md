@@ -22,7 +22,7 @@ To access the NullExplicit API, you need to obtain an API key. Please follow the
 
 ### NSFW Image Classification
 
-:exclamation: 
+## :exclamation: 
 
 > The Image Recognition model used in implementing the NSFW classifier in this endpoint is in its `BETA` state. while care has been taken to filter out any incorrect results, the model will occasionally classify `nsfw` images as `safe` or `underwear`. The developer will like to apologize for any inconvinience the issue causes  
 
