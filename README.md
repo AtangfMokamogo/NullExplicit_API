@@ -21,12 +21,12 @@ To access the NullExplicit API, you need to obtain an API key. Please follow the
 #### ```  BASE URL : ```  **Base URL: nullx.atangfino.tech/nullxapi/v1**
 
 ### NSFW Image Classification
-
+[![https://imgur.com/8SlcKTy.png](https://imgur.com/8SlcKTy.png)](https://imgur.com/8SlcKTy.png)
 ## :exclamation: 
 
 > The Image Recognition model used in implementing the NSFW classifier in this endpoint is in its `BETA` state. while care has been taken to filter out any incorrect results, the model will occasionally classify `nsfw` images as `safe` or `underwear`. The developer will like to apologize for any inconvinience the issue causes  
 
-Endpoint: `/image_analysis`
+> - Endpoint: `/image_analysis`
 
 **HTTP Method:** POST
 
@@ -49,8 +49,10 @@ Example response:
 ```
 
 ## Sentiment Analysis for Text
+[![https://imgur.com/MxYBwCb.png](https://imgur.com/MxYBwCb.png)](https://imgur.com/MxYBwCb.png)
 
-Endpoint: `/text_analysis`
+
+> - Endpoint: `/text_analysis`
 
 **HTTP Method:** POST
 
@@ -71,8 +73,9 @@ Example response:
 }
 ```
 ## User Creation
+[![https://imgur.com/v95pYQ6.png](https://imgur.com/v95pYQ6.png)](https://imgur.com/v95pYQ6.png)
 
-Endpoint: `/user`
+> - Endpoint: `/user`
 
 **HTTP Method:** GET
 
