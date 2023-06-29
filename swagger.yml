@@ -1,0 +1,142 @@
+swagger: "2.0"
+info:
+  description: "API for Text and Image Analysis"
+  version: "1.0.0"
+  title: "Text and Image Analysis API"
+host: "localhost:5000"
+basePath: "/nullxapi/v1"
+tags:
+  - name: "Text Analysis"
+    description: "Endpoint for text analysis"
+  - name: "Image Analysis"
+    description: "Endpoint for image analysis"
+  - name: "User Management"
+    description: "Endpoint for user management"
+schemes:
+  - "http"
+paths:
+  /text_analysis:
+    post:
+      tags:
+        - "Text Analysis"
+      summary: "Analyze text sentiment"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Api-Key"
+          in: "header"
+          description: "API Key for authentication"
+          type: "string"
+          required: true
+        - name: "text_input"
+          in: "body"
+          description: "Text input for analysis"
+          schema:
+            type: "object"
+            properties:
+              text_input:
+                type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            properties:
+              messages:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    sentiment:
+                      type: "string"
+        400:
+          description: "Bad Request"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+              required:
+                type: "string"
+      security:
+        - ApiKeyAuth: []
+  /image_analysis:
+    post:
+      tags:
+        - "Image Analysis"
+      summary: "Analyze image content"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Api-Key"
+          in: "header"
+          description: "API Key for authentication"
+          type: "string"
+          required: true
+        - name: "image"
+          in: "formData"
+          description: "Image file to analyze"
+          type: "file"
+          required: true
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            properties:
+              analysis:
+                type: "object"
+                properties:
+                  # Properties of the image analysis result
+        400:
+          description: "Bad Request"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+              required:
+                type: "string"
+      security:
+        - ApiKeyAuth: []
+  /users:
+    post:
+      tags:
+        - "User Management"
+      summary: "Create a new user and generate an API key"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "body"
+          description: "Username for the new user"
+          schema:
+            type: "object"
+            properties:
+              username:
+                type: "string"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            type: "object"
+            properties:
+              username:
+                type: "string"
+              api_key:
+                type: "string"
+        400:
+          description: "Bad Request"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+      security:
+        -

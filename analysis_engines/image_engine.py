@@ -2,6 +2,7 @@
 """ module that implements the image classification engine """
 import requests
 import os
+import json
 
 
 class ImageEngine():
@@ -14,6 +15,23 @@ class ImageEngine():
         self.__IMAGGA_API_KEY = "acc_be0866406e09521"
         self.__IMAGGA_API_SECRET = "8ad8461cd9f61144317b9987258ce562"
     
+    def _parse_response(self, json_str):
+        """This private class function parses the json response
+            from imagga into a much more comprehesible form for our api
+
+        Args:
+            json_str (str): json response object typecast to a string variable
+            
+        Returns:
+            string: a json type string containing the parsed response
+        """
+        data = json.loads(json_str)
+        categories = data['result']['categories']
+        categories_detected = [{'name': category['name']['en'], 'confidence': category['confidence']} for category in categories]
+        result = {'categories-detected': categories_detected}
+        json_str = json.dumps(result, indent=4)
+        return json.loads(json_str)
+        
     
     def analyze_file(self, image_path):
         """This Method Requests an Imagge categorisation form the Imagga API 
@@ -31,7 +49,7 @@ class ImageEngine():
             files={'image': open(image_path, 'rb')}
             )
             response.raise_for_status()
-            print(response.json())
+            return self._parse_response(response.text)
         
         except IOError as FILE_OPERATIONS_ERROR:
             print(self.__IMAGGA_API_KEY)

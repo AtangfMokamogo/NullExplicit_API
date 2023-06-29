@@ -6,10 +6,10 @@ from analysis_engines.image_engine import ImageEngine
 from analysis_engines.text_engine import TextEngine
 from models.engines.pickle_storage import PickleStorage
 from models.image_query import ImageQuery
-from models.text_query import TextQuery
-#from models.api_users import APIUsers
+from models.text_query import TextQuery, APIUsers
 import os
-from models.engines.database_storage import DBStorage
+import json
+#from models.engines.database_storage import DBStorage
 import sys
 
 classes = ['ImageQuery', 'APIUsers', 'TextQuery']
@@ -22,7 +22,7 @@ class NullExplicitConsole(cmd.Cmd):
     
     def precmd(self, line):
         # Perform command validation
-        if line.split()[0] not in ['greet', 'quit', 'q', 'create', 'AnalyzeImage', 'AnalyzeText']:
+        if line.split()[0] not in ['greet', 'quit', 'q', 'create', 'AnalyzeImage', 'AnalyzeText', 'unpickle', 'AddUser']:
             print("Invalid command.")
             return ''
         return line
@@ -110,30 +110,68 @@ class NullExplicitConsole(cmd.Cmd):
 
     def do_AnalyzeImage(self, line):
         """ This Console Method Sends an image to the Image Engine for analysis """
-        
-        image_filename = input("Please enter the name of the image file: ")
+        image_filename = line
         current_dir = os.getcwd()
 
         # Construct the full image path.
         # NOTE that all images tested via the console should be saved
         # In the images/users/admin directory
-        image_filename = os.path.basename(image_path)
         image_path = os.path.join(current_dir, "images", "users", "admin", image_filename)
+        image_filename = os.path.basename(image_path)
 
         image_analyzer = ImageEngine()
-        image_analyzer.analyze_file(image_path)
-        
+        image_classification = image_analyzer.analyze_file(image_path)
+        pickle = ImageQuery(image_path, 'admin', image_classification)
+        pickle.save_to_pickle()
+        print (image_classification)
         
     def do_AnalyzeText(self, line):
         """ This Console Method sends a Test Text Input for Sentiment Analysis """
         
-        text_input = "another life that probably sucks"
+        text_input = line
         
         analyse_this = TextEngine()
         analysis = analyse_this.analyze_text(text_input)
+        
+        sentiments = [message['sentiment'] for message in analysis['messages']]
+        query_object = TextQuery("3445d25a-25cd-4de4-8472-1d9e3909a0a8 ", text_input, sentiments)
+        query_object.save()
+        print("Detected sentiment/s: {}".format(sentiments))
+        print(analysis)
     
+    def do_unpickle(self, path):
+        """ This console method implements the console command
+            unpickle. The command deserialses a pickle file object
+
+        Args:
+            pickle_file (file): the serialised pickle file
+        
+        Returns:
+            class: The object instance that was pickled
+        """
+        file_name = path
+        current_dir = os.getcwd()
+        file_path = os.path.join(current_dir, "pickle_file_storage", "admin", file_name)
+        file_name = os.path.basename(file_path)
+        
+        instance = PickleStorage.de_pickler(file_path)
+        print("this is the object")
+        print(instance)
     
-          
+    def do_AddUser(self, line):
+        """This console method creates a new user 
+            The user will have a unique API key
+            
+        Args:
+            username (str): A user provided name
+            
+        Returns:
+            string: A Unique API-Key associated with username
+        """
+        user =  APIUsers(line)
+        user_token = user.add_user()
+        print("User: {} - was granted access to our api with API SECRET KEY: {}".format(line, user_token))
+        
     def do_quit(self, user='Default'):
         sys.exit()
     

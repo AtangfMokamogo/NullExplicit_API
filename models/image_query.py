@@ -7,25 +7,26 @@ import uuid
 class ImageQuery():
     """ A reresentation of an image query object """
     
-    def __init__(self, image_file, user_id, classification_results):
-        
-        # Get the file path after saving from the request headers in the flask app
-        self.image_file = image_file # The file path for the image
+    def __init__(self, image_file, username, classification_results):
+        self.image_file = image_file 
         self.classification = classification_results
-        self.query_id = str(uuid.uuid4())
-        
+        self.username = username
     
-    """ The following methods should be defined
+   
     
     def save_to_pickle(self):
-        // save to pickle file by 
-        // calling the pickler method method
-        // return stauts of pickle or error
-    
-    def load_from_pickle(self, pickle_file):
-        // pass the piclke file to the de pickler:
+        """ Method that saves object to pickle file """ 
+        from models.engines.pickle_storage import PickleStorage
+        storage = PickleStorage()
+        # create new object
+        storage.pickler(self.username)
         
-    def delete_pickle_file():
-        // call the pickle_file delete method
-        // also handle any database in any
-    """
+        
+    def load_from_pickle(self, pickle_file):
+        # pass the piclke file to the de pickler:
+        pass
+        
+    def delete_pickle_file(self):
+        # call the pickle_file delete method
+        # also handle any database in any
+        pass

@@ -87,6 +87,18 @@ class TextEngine():
         id = data["id"]
         
         # Wait for the API to process the results
-        time.sleep(31)
+        print("The Model is analyzing your text. Please wait for at least 35 seconds", end='')
+    
+        start_time = time.time()
+        elapsed_time = 0
+        dot_count = 0
+        while elapsed_time < 30:
+            if elapsed_time > dot_count * 7:
+                print('.', end='', flush=True)
+                dot_count += 1
+            time.sleep(1)
+            elapsed_time = time.time() - start_time
+        
+        print(" Done! Here are your results")
         text_analysis_score = self._request_state(query_id=id)
-        print (text_analysis_score)
+        return text_analysis_score
