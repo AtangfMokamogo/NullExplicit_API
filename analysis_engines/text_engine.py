@@ -4,6 +4,7 @@
 import requests
 import json
 import time
+import os
 
 
 class TextEngine():
@@ -12,7 +13,7 @@ class TextEngine():
     """
     
     def __init__(self):
-        self.__ACCESS_TOKEN = "02eSslKwFRZ7M3hO3B-mtupMCN2KpBTpbPi6QKZgmIYLhg1nZZ7pBA6Dc1j83L0IgMtRpWr_YNy4vycW1RKDWTgOfRGF4"
+        self.__ACCESS_TOKEN = os.environ.get('REV_AI_API_KEY')
         
         
     def _request_state(self, query_id):
