@@ -1,114 +1,119 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
-</p>
+# NullExplicit API
 
-<h3 align="center">NullExplicit API</h3>
+## Project Description
 
-<div align="center">
+NullExplicit API is a powerful API that provides two key functionalities for content moderation: NSFW image classification and sentiment analysis for text. This project aims to assist developers in building applications that require content filtering and moderation by providing reliable and efficient tools for analyzing and assessing the content's nature and sentiment.
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+## Key Features
 
-</div>
+- **NSFW Image Classification**: NullExplicit API offers an image classification endpoint specifically designed to detect and classify NSFW (Not Safe for Work) images. By utilizing advanced machine learning algorithms, the API can accurately identify explicit or inappropriate content, enabling developers to implement effective content filtering mechanisms.
 
----
+- **Sentiment Analysis for Text**: The API provides a sentiment analysis endpoint that analyzes the sentiment expressed in a given piece of text. It can determine whether the text conveys a positive, negative, or neutral sentiment. This feature can be used to automatically moderate user-generated content or gain insights from large volumes of textual data.
 
-<p align="center"> Effortlessly moderate image and text content in your applications!
-    <br> 
-</p>
+- **Sentiment Analysis for Text**: The API provides an endpoint for creating a user account from a given username. This will return an Api-Key which can be used to access the other secured endpoints. 
 
-## 📝 Table of Contents
+## Installation
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
+To access the NullExplicit API, you need to obtain an API key. Please follow the instructions on the NullExplicit API documentation website to register and obtain your API key. Once you have the API key, you can use it to authenticate your requests and access the endpoints.
 
-## 🧐 About <a name = "about"></a>
+## Endpoints
 
-Write about 1-2 paragraphs describing the purpose of your project.
+#### ```  BASE URL : ```  **Base URL: nullx.atangfino.tech/nullxapi/v1**
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+### NSFW Image Classification
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+:exclamation: 
 
-### Prerequisites
+> The Image Recognition model used in implementing the NSFW classifier in this endpoint is in its `BETA` state. while care has been taken to filter out any incorrect results, the model will occasionally classify `nsfw` images as `safe` or `underwear`. The developer will like to apologize for any inconvinience the issue causes  
 
-What things you need to install the software and how to install them.
+Endpoint: `/image_analysis`
 
-```
-Give examples
-```
+**HTTP Method:** POST
 
-### Installing
+**Request Parameters:**
 
-A step by step series of examples that tell you how to get a development env running.
+- `image` (file): The image file to be classified.
 
-Say what the step will be
+**Response:**
 
-```
-Give the example
+The response contains the classification results for the provided image. It includes the probability scores for different categories, such as explicit, suggestive, or safe.
+
+Example response:
+
+```json
+{
+  "nsfw": 0.926,
+  "safe": 0.074,
+  "underwear": 0.0
+}
 ```
 
-And repeat
+## Sentiment Analysis for Text
 
+Endpoint: `/text_analysis`
+
+**HTTP Method:** POST
+
+**Request Parameters:**
+
+- `text` (string): The text to be analyzed for sentiment.
+
+**Response:**
+
+The response contains the sentiment analysis results for the provided text. It includes the sentiment label (positive, negative, or neutral) and the corresponding confidence score.
+
+Example response:
+
+```json
+{
+  "label": "positive",
+  "confidence": 0.872
+}
 ```
-until finished
+## User Creation
+
+Endpoint: `/user`
+
+**HTTP Method:** GET
+
+**Request Parameters:**
+
+- `username` (string): The desired username for the new user.
+
+**Response:**
+
+The response contains the API key for the newly created user.
+
+Example response:
+
+```json
+{
+  "apiKey": "e85bf624-3e02-4c28-a41c-44f6c6789d54"
+}
 ```
+## Usage
 
-End with an example of getting some data out of the system or using it for a little demo.
+To utilize the NullExplicit API in your application, follow these steps:
 
-## 🔧 Running the tests <a name = "tests"></a>
+1. Make sure you have obtained an API key from the NullExplicit API documentation website.
 
-Explain how to run the automated tests for this system.
+2. Include the API key in the headers or as a parameter when making API requests to authenticate your requests.
 
-### Break down into end to end tests
+3. For NSFW image classification, send a POST request to the `/api/nsfw/classify` endpoint, providing the image file as the request payload. The API will respond with the classification results indicating the probability scores for different categories.
 
-Explain what these tests test and why
+4. For sentiment analysis, send a POST request to the `/api/sentiment/analyze` endpoint, providing the text to be analyzed as the request payload. The API will respond with the sentiment analysis results, including the sentiment label and confidence score.
 
-```
-Give an example
-```
+For detailed code examples and implementation instructions, please refer to the NullExplicit API documentation specific to your programming language.
 
-### And coding style tests
+## Contributing
 
-Explain what these tests test and why
+Contributions to the NullExplicit API project are currently not accepted as the development is handled internally. However, feedback and suggestions are always welcome. If you have any ideas or encounter any issues, please contact us through the support channels mentioned below.
 
-```
-Give an example
-```
+## License
 
-## 🎈 Usage <a name="usage"></a>
+NullExplicit API is released under the MIT License. Please review the terms and conditions of the license before using the API.
 
-Add notes about how to use the system.
+## Support
 
-## 🚀 Deployment <a name = "deployment"></a>
+For any questions, issues, or assistance regarding the NullExplicit API, please reach out to our support channels mentioned below.
 
-Add additional notes about how to deploy this on a live system.
-
-## ⛏️ Built Using <a name = "built_using"></a>
-
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
-
-## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
