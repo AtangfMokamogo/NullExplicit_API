@@ -27,14 +27,14 @@ class ImageEngine():
         """
         data = json.loads(json_str)
         categories = data['result']['categories']
-        categories_detected = [{'name': category['name']['en'], 'confidence': category['confidence']} for category in categories]
+        categories_detected = [{'label': category['name']['en'], 'confidence': category['confidence']} for category in categories]
         result = {'categories-detected': categories_detected}
         json_str = json.dumps(result, indent=4)
         return json.loads(json_str)
         
     
     def analyze_file(self, image_path):
-        """This Method Requests an Imagge categorisation form the Imagga API 
+        """This Method Requests an Image categorisation form the Imagga API 
 
         Args:
             image_path (str): The path to the image file

@@ -59,15 +59,7 @@ class PickleStorage():
         
         
     def de_pickler(pickle_file) :
-        """ This Function de-serializes a pickle file
-            into the original ImageQuery object
 
-        Args:
-            pickle_file(binary): The pickled file to deserialize
-            
-        Returns:
-            class: The instance of the pickled class.
-        """
         
         try:
             with open(pickle_file, 'rb') as file:

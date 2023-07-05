@@ -1,12 +1,15 @@
-from flask import Flask, request
-from flask_restful import Api, Resource
-from models.url_resources import TextAnalysisResource, ImageAnalysisResource
-from models.text_query import APIUsers
+from flask import Flask, request, render_template
 from flasgger import Swagger
+from flask_restful import Api
+from flask_cors import CORS
+
+from models.url_resources import TextAnalysisResource, ImageAnalysisResource
+from models.api_users import APIUsers
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
-swagger = Swagger(app, template_file='swagger.yml')
+swagger = Swagger(app, template_file='swagger.yaml')
 
 # Add the resource classes to the API
 api.add_resource(TextAnalysisResource, '/nullxapi/v1/text_analysis')
@@ -23,10 +26,15 @@ def create_user():
     
     # Generate a unique API key for the user
     user = APIUsers(username)
-    api_key= user.add_user()
+    api_key= user.save_query()
     
     # Save the user and their API key to the database or any other storage mechanism
     
     return {'username': username, 'api_key': api_key}, 201
+@app.route('/')
+def home():
+    """Nullx Homepage """
+    
+    return render_template('homepage.html')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

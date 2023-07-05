@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Homepage- NullExplicit API</title>
+  <link rel="stylesheet" href="../static/styles/styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    // Plain JavaScript
+document.addEventListener("DOMContentLoaded", function() {
+    // Add click event listener to the hamburger icon
+    var hamburger = document.getElementById("hamburger");
+    var navLinks = document.querySelector("nav ul");
+  
+    hamburger.addEventListener("click", function() {
+      navLinks.classList.toggle("active");
+    });
+  });
+  
+  // jQuery
+  $(document).ready(function() {
+    // Smooth scrolling effect for anchor links
+    $('a[href^="#"]').on("click", function(event) {
+      event.preventDefault();
+      var target = $(this.getAttribute("href"));
+      if (target.length) {
+        $("html, body").animate({
+          scrollTop: target.offset().top
+        }, 800);
+      }
+    });
+  });
+  
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+        <a href="#" class="logo">
+            <h1>
+              <span class="jab">NullExplicit API</span>
+              <span class="fist">&#x2718;</span>
+            </h1>
+          </a>
+          <ul>
+            <li class="nav-item">
+                <a href="https://github.com/AtangfMokamogo/NullExplicit_API" class="nav-link" id="nav-link">Github</a>
+              </li>
+            <li class="nav-item">
+              <a href="/apidocs/" class="nav-link" id="nav-link">API Documentation</a>
+            </li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+    </nav>
+  </header>
+  
+  <section class="hero">
+   
+    <div class="hero-text">
+      <h1>
+        <span class="hero-heading-text">Introducing NullExplicit!</span> <br />
+      </h1>
+      <h5>
+        <span  class="secondary-intro-text">A simplified NSFW image classification and text sentiment analysis API</span> <br />
+      </h5>
+      <button class="cta-btn" type="button">Try It Out Here!</button>
+
+    </div>
+  </section>
+  
+  <section class="info-section" style="background-color: white;">
+    <div class="text-heading">
+        <h1 class="offerings"> What NullExplicit API Offers </h1>
+    </div>
+    <div class="text-container">
+        <figure class="snip1568">
+            <figcaption>
+              <h3>Text Sentiment Analysis Endpoint</h3>
+              <p>You can use sentiment analysis to figure out if a text contains negative, positive or neutral sentiment.</p>
+            </figcaption>
+            <div class="profile-image"><img src="../static/images/search.png" alt="profile-sample2" />
+            </div>
+          </figure>
+
+          <figure class="snip1568">
+            <figcaption>
+              <h3>NSFW classification Endpoint</h3>
+              <p>You can use image analysis to figure out if an image contains NSFW content</p>
+            </figcaption>
+            <div class="profile-image"><img src="../static/images/no-nsfw.jpeg" alt="profile-sample2" />
+            </div>
+          </figure>
+  </section>
+  
+  <!-- The rest of your content goes here -->
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://github.com/AtangfMokamogo/NullExplicit_API">Project GitHub Page</a></li>
+    </ul>
+  </footer>
+  
+</body>
+</html>

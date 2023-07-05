@@ -1,95 +1,99 @@
-#!/usr/bin/python3
-""" This Module Implemnts a Base Text Query Object """
-import uuid
-import models
-from datetime import datetime
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Text, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-from models.engines.database_storage import DBStorage
-#from models.api_users import APIUsers
+from models.engines.db import Base, DataStorage
+import models
 
 
 
-Base = declarative_base()
-
-
-class APIUsers(Base):
-    """ This class models an API User Object """
-    __tablename__ = 'Users'
-    user_id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(80))
-    api_key = Column(String(100))
-
+class TextQuery(DataStorage, Base):
+    """ Represents the Text query object """
     
-    def __init__(self, username):
-        self.username = username
-        
-        """ The following methods should be defined for the user class """
-        
-    def add_user(self):
-        """add new user to database"""
-        self.api_key = str(uuid.uuid4())
-        
-        storage = DBStorage()
-        storage.reload_database()
-        
-        # create new object
-        storage.new_query(self)
-        
-        # save object to database
-        storage.save_to_db()
-        
-        return self.api_key
-        
+    __tablename__ = 'TextQuery'
+    id = Column(Integer, primary_key=True)
+    userApiKey = Column(String, ForeignKey('APIUsers.apikey'))
+    text = Column(Text)
+    analysis = Column(Text)
+    user = relationship("APIUsers", back_populates="queries")
     
-    def delete_user(self, user_id):
-        """ delete user associated with user_id """
-        # from database
+    
+    def __init__(self, api_key, text_input, analysis):
+        """ Initialises the APIUsers class """
+        super().__init__()
+        id = Column(Integer, primary_key=True)
+        self.userApiKey = api_key
+        self.text = text_input
+        self.analysis = analysis
         
-    def query_api_key(self, api_key) -> bool:
-        """This Method retrieves an api key from database
+       
+     
+    def save_query(self):
+        """ adds new text query to database """
+
+        try:
+            models.storage.session.add(self)
+            models.storage.session.commit()
+            
+        except:
+            models.storage.session.rollback()
+            raise
+        
+        finally:
+            models.storage.session.close()
+    
+    
+    def retrieve_query(self, query_id):
+        """ Retrieves Record associated with <query_id> from database.
 
         Args:
-            api_key (str): This is the API key to retrieve from database
-
+            query_id (int): The query id associated with record
+            
         Returns:
-            bool: True if key is present else False
+            string: A string representation of the record
         """
         
+        try:
+            query= models.storage.session.query(TextQuery).filter_by(id=query_id).first()
+            
+            if query:
+                record = "Query ID: {}  User-Api-Key: {} Input-Text: {} Text-Sentiment: {}".format(TextQuery.id, TextQuery.userApiKey, TextQuery.text, TextQuery.analysis)
+                return record
+            
+            else:
+                return "There is no Query associated with the provided Query ID"
+            
+        except:
+            models.storage.session.rollback()
+            raise
         
-class TextQuery(Base):
-    """ This Class represents the base text query sent by user for
-        sentiment analysis
-    """
-    __tablename__ = 'TextQueries'
-    user_id = Column(String(100))
-    text_input = Column(Text)
-    analysis_score = Column(String())
-    created_at = Column(DateTime, default=datetime.utcnow)
-    query_number = Column(Integer, primary_key=True, autoincrement=True)
+        finally:
+            models.storage.session.commit()
+        
     
-    def __init__(self, api_key, text_input, classification_result):
-        self.user_id = api_key
-        self.text_input = text_input
-        self.analysis_score = classification_result
-        
+    
+    def remove_query(self, query_id):
+        """ Deletes a record associated with <query_id>
 
+        Args:
+            query_id (int): The query id associated with record
+            
+        Returns:
+            string: "Query removed from record" else "No record assosciated with <query_id>
+        """
         
-    def save(self):
-        """ Saves object instance to database """
+        try:
+            query= models.storage.session.query(TextQuery).filter_by(id=query_id).first()
+            
+            if query:
+                models.storage.session.delete(query)
+                
+                return "Query associated with Query ID: {} Has been successfully deleted!".format(query_id)
+
+            else:
+                return "Unsuccessful!: There is no Query associated with the provided Query ID"
+            
+        except:
+            models.storage.session.rollback()
+            raise
         
-        storage = DBStorage()
-        storage.reload_database()
-        
-        # create new object
-        storage.new_query(self)
-        
-        # save object to database
-        storage.save_to_db()
-        
-        
-    def delete(self):
-        """ delete instance of object from database"""
-        from models.engines.database_storage import DBStorage
-        DBStorage.delete_from_db(self)
+        finally:
+            models.storage.session.commit()

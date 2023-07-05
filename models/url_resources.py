@@ -1,16 +1,19 @@
 #!/usr/bin/python3
 """ Module that implements the url resources for our flask app """
-
+import os
+from flask import request
+from flasgger.utils import swag_from
 from flask_restful import Resource
 from models.auth_module import authenticate
-from models.text_query import APIUsers, TextQuery
+
+from models.api_users import APIUsers
+from models.text_query import TextQuery
 from models.image_query import ImageQuery
 from analysis_engines.text_engine import TextEngine
 from analysis_engines.image_engine import ImageEngine
-from models.engines.database_storage import DBStorage
-from flask import request
-from flasgger.utils import swag_from
-import os
+from models.base_query import BaseClass
+
+user_key = BaseClass()
 
 
 class TextAnalysisResource(Resource):
@@ -21,13 +24,10 @@ class TextAnalysisResource(Resource):
     def post(self):
         """Function that implements the post endpoint for sentiment analysis
         """
+        
         # Extract the API KEY from the headers use it to find username
-        storage = DBStorage()
-        storage.reload_database()
-        
         api_key = request.headers.get('Api-Key')
-        
-        user = storage.get_user_by_api_key(api_key)
+        user = user_key.get_key(api_key)
 
         
         if not user:
@@ -35,7 +35,7 @@ class TextAnalysisResource(Resource):
         
         # Extract Text submitted for analysis from request body
         payload = request.get_json()
-        text_input = payload.get('text_input')
+        text_input = payload.get('text-input')
         
         # Analysing the text and Extract sentiment for saving to database
         query_analysis_object = TextEngine()
@@ -44,7 +44,7 @@ class TextAnalysisResource(Resource):
         
         # create a new instance of TextQuery class to save the request to database
         query_object = TextQuery(api_key, text_input, sentiment_value)
-        query_object.save()
+        query_object.save_query()
         
         return analysis
     
@@ -56,10 +56,6 @@ class ImageAnalysisResource(Resource):
     def post(self):
         """ Implements the post endpoint for image analysis """
         
-        storage = DBStorage()
-        storage.reload_database()
-        
-        
         # Check if the 'image' file was uploaded in the request
         if 'image' not in request.files:
             return {'message': 'No image file uploaded.', 'required':'image file'}, 400
@@ -67,12 +63,12 @@ class ImageAnalysisResource(Resource):
         image_file = request.files['image']
         
         api_key = request.headers.get('Api-Key')
-        user = storage.get_user_by_api_key(api_key)
-        
+        user = user_key.get_key(api_key)
+
         if not user:
             username = 'default'
         else:
-            username = user.username
+            username = api_key
         
         # Save the image to the specific user folder
         folder_path = os.path.join(os.getcwd(), 'images', username)
@@ -86,6 +82,6 @@ class ImageAnalysisResource(Resource):
         
         # Create an ImageQuery object for storage
         query_object = ImageQuery(file_path, username, analysis)
-        query_object.save_to_pickle()
+        query_object.save_to_pickle(api_key)
         
         return analysis

@@ -6,7 +6,9 @@ from analysis_engines.image_engine import ImageEngine
 from analysis_engines.text_engine import TextEngine
 from models.engines.pickle_storage import PickleStorage
 from models.image_query import ImageQuery
-from models.text_query import TextQuery, APIUsers
+from models.engines.db import DataStorage
+from models.api_users import APIUsers
+from models.text_query import TextQuery
 import os
 import json
 #from models.engines.database_storage import DBStorage
@@ -129,13 +131,13 @@ class NullExplicitConsole(cmd.Cmd):
         """ This Console Method sends a Test Text Input for Sentiment Analysis """
         
         text_input = line
-        
+        test_Key = "fe9e4b2d-9682-4dcb-95e6-8961cd0a199a"
         analyse_this = TextEngine()
         analysis = analyse_this.analyze_text(text_input)
         
         sentiments = [message['sentiment'] for message in analysis['messages']]
-        query_object = TextQuery("3445d25a-25cd-4de4-8472-1d9e3909a0a8 ", text_input, sentiments)
-        query_object.save()
+        query_object = TextQuery(test_Key, text_input, sentiments)
+        query_object.save_query()
         print("Detected sentiment/s: {}".format(sentiments))
         print(analysis)
     
@@ -169,7 +171,7 @@ class NullExplicitConsole(cmd.Cmd):
             string: A Unique API-Key associated with username
         """
         user =  APIUsers(line)
-        user_token = user.add_user()
+        user_token = user.save_query()
         print("User: {} - was granted access to our api with API SECRET KEY: {}".format(line, user_token))
         
     def do_quit(self, user='Default'):

@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
-  description: "API for Text and Image Analysis"
+  description: "A Simple Content Moderation API for Text Sentiment and Image NSFW filtration"
   version: "1.0.0"
-  title: "Text and Image Analysis API"
-host: "localhost:5000"
+  title: "NullExplicit API"
+host: "nullx.atangfino.tech"
 basePath: "/nullxapi/v1"
 tags:
   - name: "Text Analysis"
@@ -30,13 +30,13 @@ paths:
           description: "API Key for authentication"
           type: "string"
           required: true
-        - name: "text_input"
+        - name: "text-input"
           in: "body"
           description: "Text input for analysis"
           schema:
             type: "object"
             properties:
-              text_input:
+              text-input:
                 type: "string"
       responses:
         200:
@@ -49,8 +49,21 @@ paths:
                 items:
                   type: "object"
                   properties:
+                    content:
+                      type: "string"
+                      description: "Content of the analyzed text"
+                    score:
+                      type: "number"
+                      description: "Sentiment score of the analyzed text"
                     sentiment:
                       type: "string"
+                      description: "Sentiment label of the analyzed text"
+                    offset:
+                      type: "integer"
+                      description: "Starting position of the analyzed text within the input"
+                    length:
+                      type: "integer"
+                      description: "Length of the analyzed text within the input"
         400:
           description: "Bad Request"
           schema:
@@ -79,7 +92,7 @@ paths:
           required: true
         - name: "image"
           in: "formData"
-          description: "Image file to analyze"
+          description: "Please upload an image file (JPEG, PNG, JPG)"
           type: "file"
           required: true
       responses:
@@ -88,10 +101,17 @@ paths:
           schema:
             type: "object"
             properties:
-              analysis:
-                type: "object"
-                properties:
-                  # Properties of the image analysis result
+              categories-detected:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                      description: "Name of the detected category"
+                    confidence:
+                      type: "number"
+                      description: "Confidence level of the detected category"
         400:
           description: "Bad Request"
           schema:
@@ -139,4 +159,4 @@ paths:
               message:
                 type: "string"
       security:
-        -
+        - []
