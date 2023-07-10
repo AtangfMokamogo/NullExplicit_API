@@ -3,7 +3,7 @@ info:
   description: "A Simple Content Moderation API for Text Sentiment and Image NSFW filtration"
   version: "1.0.0"
   title: "NullExplicit API"
-host: "nullx.atangfino.tech"
+host: "localhost:5000"
 basePath: "/nullxapi/v1"
 tags:
   - name: "Text Analysis"

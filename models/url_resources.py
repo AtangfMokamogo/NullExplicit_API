@@ -45,7 +45,6 @@ class TextAnalysisResource(Resource):
         # create a new instance of TextQuery class to save the request to database
         query_object = TextQuery(api_key, text_input, sentiment_value)
         query_object.save_query()
-        
         return analysis
     
 

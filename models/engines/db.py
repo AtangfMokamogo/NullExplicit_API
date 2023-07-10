@@ -16,6 +16,7 @@ class DataStorage:
         NULL_X_MYSQL_HOST = os.environ.get('NULL_EXPLICIT_MYSQL_HOST')
         NULL_X_MYSQL_DATABASE = os.environ.get('NULL_EXPLICIT_MYSQL_DATABASE')
 
+        print(NULL_X_MYSQL_HOST)
         self.engine = create_engine(f"mysql+pymysql://{NULL_X_MYSQL_USER}:{NULL_X_MYSQL_PWD}@{NULL_X_MYSQL_HOST}/{NULL_X_MYSQL_DATABASE}")
     
     
